@@ -1,0 +1,189 @@
+#!/bin/bash
+##
+# Prime factorization  array
+##
+
+read -p "Enter a number other than 0 and 1: " number
+temp=$number
+declare -a primeFactors
+index=0
+isPrime="true"
+for ((n=2; n<=$number; n++))
+do
+	for ((i=2; $((i*i))<=n; i++)) # or we can also use 'for ((i=2; i<=n/2; i++))'
+	do
+		if [ $((n%i)) -eq 0 ]
+		then
+			isPrime="false"
+		fi
+	done
+
+	if [ $isPrime == "true" ]
+	then
+		if [ $(($number%$n)) -eq 0 ]
+		then
+			number=$(($number/$n))
+			primeFactors[$index]=$n
+			((index++))
+			n=1
+		fi
+	fi
+	isPrime="true"
+done
+echo "Prime factors of $temp are: "${primeFactors[@]}
+
+################################################################################
+
+#!/bin/bash -x
+
+##
+# Write a program in the following steps
+# a. Generate 10 Random 3 digit numbers
+# b. Store in an array
+# c. Find the 2nd largest and 2nd smallest of the array after sorting
+##
+
+declare -a random_numbers
+for (( i=0; i<=9; i++ ))
+do
+	random_numbers[$i]=$((100+RANDOM%900))
+done
+
+echo ${random_numbers[@]}
+
+# sorting ascending order (buble-sort technique)
+
+for ((i=0; i<=((${#random_numbers[@]}-1)); i++))
+do
+	for ((j=0; j<=((${#random_numbers[@]}-$i-1)); j++))
+	do
+		if [ ${random_numbers[$j]} -gt ${random_numbers[$((j+1))]} ]
+		then
+			# swap
+			random_numbers[$j]=$(( ${random_numbers[$j]}+${random_numbers[$((j+1))]} ))
+			random_numbers[$((j+1))]=$(( ${random_numbers[$j]}-${random_numbers[$((j+1))]} ))
+			random_numbers[$j]=$(( ${random_numbers[$j]}-${random_numbers[$((j+1))]} ))
+		fi
+	done
+done
+
+
+
+echo ${random_numbers[@]}
+
+smallest=${random_numbers[0]}
+biggest=${random_numbers[${#random_numbers[@]}-1]}
+
+for ((i=1; i<=$((${#random_numbers[@]}-1)); i++))
+do
+	if [[ ${random_numbers[$i]} -gt $smallest ]]
+	then
+		second_smallest=${random_numbers[$i]}
+		break #break condition
+	fi
+done
+
+for ((i=$((${#random_numbers[@]}-1)); i>=0; i--))
+do
+	if [[ ${random_numbers[$i]} -lt $biggest ]]
+	then
+		second_biggest=${random_numbers[$i]}
+		break #break condition
+	fi
+done
+
+echo "biggest number is: "$biggest" and smallest number is: "$smallest
+echo "biggest number is: "$second_biggest" and smallest number is: "$second_smallest
+
+###########################################################################################
+
+#!/bin/bash
+
+##
+# Write a program in the following steps
+# a. Generate 10 Random 3 digit numbers
+# b. Store in an array
+# c. Find the 2nd largest and 2nd smallest of the array 
+#    without sorting
+##
+
+declare -a random_numbers
+for (( i=0; i<=9; i++ ))
+do
+	random_numbers[$i]=$((100+RANDOM%900))
+done
+
+smallest=${random_numbers[0]}
+biggest=${random_numbers[0]}
+
+for ((i=1; i<=((${#random_numbers[@]}-1)); i++))
+do
+	if [ ${random_numbers[i]} -gt $biggest ]
+	then
+		biggest=${random_numbers[i]}
+	elif [ ${random_numbers[i]} -lt $smallest ]
+	then
+		smallest=${random_numbers[i]}
+	fi
+done
+
+second_biggest=${random_numbers[0]}
+second_smallest==${random_numbers[0]}
+
+for ((i=1; i<=((${#random_numbers[@]}-1)); i++))
+do
+	if [[ (${random_numbers[i]} -lt $biggest && ${random_numbers[i]} -gt $second_biggest) ]]
+	then
+		second_biggest=${random_numbers[i]}
+	elif [[ (${random_numbers[i]} -gt $smallest && ${random_numbers[i]} -lt $second_smallest) ]] # hetting error message: operand needed
+	then
+		second_smallest=${random_numbers[i]}
+	fi
+done
+
+echo ${random_numbers[@]}
+
+echo "biggest number is: "$biggest" and smallest number is: "$smallest
+echo "second biggest number is: "$second_biggest" and second smallest number is: "$second_smallest
+
+###########################################################################################
+
+#!/bin/bash -x
+
+##
+# sum three numbers zero
+##
+
+declare -a array
+array[0]=$((-1))
+array[1]=0
+array[2]=1
+echo ${array[@]}
+
+for ((i=0;i<=$((${#array[@]}-1));i++))
+do
+	sum=$(($sum+${array[$i]}))
+done
+
+echo "sum is = "$sum
+
+###############################################################################################
+
+#!/bin/bash -x
+
+##
+# twins in range
+##
+
+declare -a array
+index=0
+for ((i=0;i<=100;i++))
+do
+	if [[ ($(($i%11)) -eq 0 && $i -ne 0) ]]
+	then
+		array[$index]=$i
+		((index++))
+	fi
+done
+
+echo ${array[@]}
