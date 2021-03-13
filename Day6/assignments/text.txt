@@ -1,0 +1,404 @@
+##
+# factorial
+##
+#!/bin/bash -x
+read -p "Enter a number: " n
+factorial=1
+if [ $n -ne 0 ]
+then
+	for ((i=$n; i>=1; i--))
+	do
+		factorial=$(($factorial*$i))
+	done
+fi
+
+echo "factorial of $n is = "$factorial
+
+##########################################################
+
+#!/bin/bash -x
+##
+# read a number n from the user and print nth harmonic. 
+# nth harmonic is Hn = 1/1 + 1/2 + 1/3 + 1/4 + ... + 1/n
+##
+read -p "enter a number: " n
+harmonic=0
+for (( i=1; i<=n; i++))
+do
+	harmonic=`echo "scale=2;$harmonic+(1/$i)" | bc`
+done
+
+##########################################################
+
+#!/bin/bash -x
+##
+# Write a program that takes command line argument n , ansd prints table of powers of 2 that is lessthan or equal to 2^n
+##
+
+read -p "Enter a number:" n
+result=1
+for ((i=1; i<=n; i++))
+do
+	result=$(($result*2))
+	echo $result
+done
+
+##########################################################
+
+##
+# prime factorization factors
+##
+
+#!/bin/bash -x
+read -p "Enter a number other than 0: " number
+temp=$number
+primeFactor="prime factors are "
+isPrime="true"
+for ((n=2; n<=$number; n++))
+do
+	for ((i=2; $((i*i))<=n; i++)) # or we can also use 'for ((i=2; i<=n/2; i++))'
+	do
+		if [ $((n%i)) -eq 0 ]
+		then
+			isPrime="false"
+		fi
+	done
+
+	if [ $isPrime == "true" ]
+	then
+		if [ $(($number%$n)) -eq 0 ]
+		then
+			number=$(($number/$n))
+			primeFactor="$primeFactor $n"
+		fi
+	fi
+	isPrime="true"
+done
+echo $primeFactors
+
+##########################################################
+
+##
+# prime
+##
+
+#!/bin/bash -x
+read -p "Enter a number: " n
+isPrime="true"
+if [[ $n -eq 0 || $n -eq 1 ]]
+then
+	isPrime="false"
+else
+	for ((i=2; i<=n/2; i++))
+	do
+		if [ $((n%i)) -eq 0 ]
+		then
+			isPrime="false"
+		fi
+	done
+fi
+if [ $isPrime == "true" ]
+then
+	echo "$n is prime number"
+else
+	echo "$n is not a prime number"
+fi
+
+##########################################################
+
+##
+# Range of primes
+##
+
+#!/bin/bash 
+read -p "Enter the lower limit: " l
+read -p "Enter the upper limit: " u
+isPrime="true"
+for ((n=$l; n<=$u; n++))
+do
+	if [[ $n -eq 0 || $n -eq 1 ]]
+	then
+		isPrime="false"
+	else
+		for ((i=2; i<=n/2; i++))
+		do
+			if [ $((n%i)) -eq 0 ]
+			then
+				isPrime="false"
+			fi
+		done
+	fi
+
+	if [ $isPrime == "true" ]
+	then
+		echo "$n is prime number"
+	fi
+	isPrime="true"
+done
+
+##########################################################
+
+##
+# coin flip winner
+##
+
+#!/bin/bash -x
+heads=1
+tails=0
+H=0
+T=0
+while [[ $H -lt 11 && $T -lt 11 ]]
+do
+	coinFlipped=$((RANDOM%2))
+	if [ $coinFlipped -eq $heads ]
+	then
+		((H++))
+	else
+		((T++))
+	fi
+done
+
+##########################################################
+
+##
+# gambling
+##
+
+#!/bin/bash -x
+won=1
+number_of_bets=0
+number_of_wins=0
+number_of_losess=0
+
+money_have=100
+money_should_earn=200
+each_bet=20
+money_for_winner=20 # gains Rs.20/- for each win
+
+while [[ ($money_have -ge $each_bet && $money_have -lt $money_should_earn) ]]
+do
+	((number_of_bets++))
+	result=$((RANDOM%2))
+	if [ $result -eq $won ]
+	then
+		money_have=$(($money_have+$each_bet))
+		((number_of_wins++))
+	else
+		money_have=$(($money_have-$each_bet))
+		((number_of_losess++))
+	fi
+done
+
+if [ $money_have -eq 0 ]
+then
+	echo "Player brok!"
+else
+	echo "player won!"
+fi
+
+echo "number of bets = $number_of_bets"
+echo "number of wins = $number_of_wins"
+echo "number of losess = $number_of_losess"
+
+##########################################################
+
+##
+# magic number is not finished
+##
+
+#!/bin/bash -x
+read -p "Think a number between 1 to 100: "
+read -p "Did you think? then type yes" yes
+if [[ $yes == "yes" || $yes == "YES" ]]
+then
+	
+fi
+
+##########################################################
+
+##
+# power table upto 256
+##
+
+#!/bin/bash -x
+read -p "Enter a number: " n
+if [ $n -eq 0 ]
+then
+	echo "0"
+else
+	var=1
+	m=1
+	while [[ ($m -le $n && $var -lt 256) ]]
+	do
+		((m++))
+		var=$(($var*2))
+		echo $var
+	done
+fi
+
+##########################################################
+
+##
+# heat conversion
+##
+
+#!/bin/bash -x
+function degF_to_degC(){
+	if [[ ($1 -ge 32 && $1 -le 212) ]]
+	then
+		degC=`echo "scale=2;($1-32.0)*5/9" | bc`
+	else
+		echo "temperature entered is beyond the limits!"
+	fi
+}
+function degC_to_degF(){
+	if [[ ($1 -ge 0 && $1 -le 100) ]]
+	then
+		degF=`echo "scale=2;($1*9.0/5)+32" | bc`
+	else
+		echo "temperature entered is beyond the limits!"
+	fi
+}
+
+read -p "Enter the temperature: " T
+
+read -p "Select the option: 1) degF to degC 2) degC to degF  " option
+
+degF_to_degC=1
+degC_to_degF=2
+
+case "$option" in
+	$degF_to_degC)
+		degF_to_degC $T
+			;;
+	$degC_to_degF)
+		degC_to_degF $T
+			;;
+	*)
+		echo "invalid option!"
+esac
+
+##########################################################
+
+##
+# palindrome?
+##
+
+#!/bin/bash -x
+function is_palindrome(){
+	n=$1
+	reverse=0
+	while [ $n -ne 0 ]
+	do
+		rem=$(($n%10))
+		reverse=$((reverse*10+rem))
+		n=$(($n/10))
+	done
+	if [ $reverse -eq $1 ]
+	then
+		echo "$1 is palindrome!"
+	else
+		echo "$1 is not a palindrome!"
+	fi
+}
+
+read -p "Enter two numbers: " n1 n2
+is_palindrome $n1
+is_palindrome $n2
+
+##########################################################
+
+##
+# prime? and palindrome? and both?
+##
+
+#!/bin/bash -x
+function is_prime(){
+	isPrime="true"
+	n=$1
+	if [[ $n -eq 0 || $n -eq 1 ]]
+	then
+		isPrime="false"
+	else
+		for ((i=2; i<=n/2; i++))
+		do
+			if [ $((n%i)) -eq 0 ]
+			then
+				isPrime="false"
+			fi
+		done
+	fi
+
+	if [ $isPrime == "true" ]
+	then
+		echo "$n is prime number"
+	else
+		echo "$n is not a prime number"
+	fi
+
+}
+
+function is_palindrome(){
+	n=$1
+	reverse=0
+	while [ $n -ne 0 ]
+	do
+		rem=$(($n%10))
+		reverse=$((reverse*10+rem))
+		n=$(($n/10))
+	done
+	if [ $reverse -eq $1 ]
+	then
+		echo "$1 is palindrome!"
+	else
+		echo "$1 is not a palindrome!"
+	fi
+	is_prime $1
+}
+read -p "Enter a number: " number
+is_prime $number
+is_palindrome $number
+
+###################################################################################
+
+#!/bin/bash
+
+##
+# magic number: Think a number in the given range and find it using binary searching method.
+##
+
+read -p "Think a number between 1 to 100: "
+read -p "Did you think?: y/n? " yes
+if [[ $yes == "y" || $yes == "Y" ]]
+then
+	Lower_limit=1
+	Upper_limit=100
+	less=""
+	greater=""
+	magic_number="not found"
+	while [[ $magic_number == "not found" ]]
+	do
+		n=`echo "($Lower_limit+$Upper_limit)/2" | bc`
+		read -p  "Is your number less than $n ?: y/n? " less
+		if [[ $less == "y" ||  $less == "Y" ]]
+		then
+			Upper_limit=$n
+		elif [[ $less == "n" || $less == "N" ]]
+		then
+			read -p "Is your number greater than $n ?: y/n? " greater
+			if [[ $greater == "y" ||  $greater == "Y" ]]
+			then
+				Lower_limit=$n
+			elif [[ $greater == "n" || $greater == "N" ]]
+			then
+				echo "Your magic number is: "$n
+				magic_number="found"
+			else
+				echo "invalid responce! (type y if yes, type n if no)"
+			fi
+		else
+			echo "invalid responce! (type y if yes, type n if no)"
+		fi
+	done
+fi
+
