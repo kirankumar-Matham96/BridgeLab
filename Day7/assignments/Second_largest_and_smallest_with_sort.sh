@@ -33,30 +33,10 @@ do
 	done
 done
 
-
-
-echo ${random_numbers[@]}
-
 smallest=${random_numbers[0]}
-biggest=${random_numbers[${#random_numbers[@]}-1]}
-
-for ((i=1; i<=$((${#random_numbers[@]}-1)); i++))
-do
-	if [[ ${random_numbers[$i]} -gt $smallest ]]
-	then
-		second_smallest=${random_numbers[$i]}
-		break #break condition
-	fi
-done
-
-for ((i=$((${#random_numbers[@]}-1)); i>=0; i--))
-do
-	if [[ ${random_numbers[$i]} -lt $biggest ]]
-	then
-		second_biggest=${random_numbers[$i]}
-		break #break condition
-	fi
-done
+biggest=${random_numbers[((${#random_numbers[@]}-1))]}
+second_smallest=${random_numbers[1]}
+second_biggest=${random_numbers[((${#random_numbers[@]}-2))]}
 
 echo "biggest number is: "$biggest" and smallest number is: "$smallest
 echo "biggest number is: "$second_biggest" and smallest number is: "$second_smallest
